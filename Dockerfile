@@ -20,7 +20,8 @@ RUN apt-get install -y software-properties-common curl build-essential \
 
 # add some repositories
 RUN apt-add-repository ppa:nginx/stable -y && \
-    apt-add-repository ppa:rwky/redis -y && \
+    #apt-add-repository ppa:rwky/redis -y && \
+    apt-add-repository ppa:chris-lea/redis-server -y && \
     apt-add-repository ppa:ondrej/php -y && \
     apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5 && \
     sh -c 'echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-8.0" >> /etc/apt/sources.list.d/mysql.list' && \
