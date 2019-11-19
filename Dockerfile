@@ -60,10 +60,9 @@ VOLUME ["/var/cache/nginx"]
 VOLUME ["/var/log/nginx"]
 
 # install php
-#RUN apt-get install -y --force-yes php7.2 php7.2-fpm php7.2-mysql php7.2-curl php7.2-json php7.2-cgi php7.2-mbstring php7.2-xmlrpc php7.2-soap php7.2-gd php7.2-xml php7.2-intl php7.2-cli php7.2-zip php-xdebug php-common
 RUN apt-get install -y --force-yes php7.2 php7.2-fpm php7.2-cli php7.2-dev php7.2-pgsql php7.2-sqlite3 php7.2-gd \
-    php-apcu php7.2-curl php7.2-mcrypt php7.2-imap php7.2-mysql php7.2-readline php-xdebug php-common \
-    php7.2-mbstring php7.2-xml php7.2-zip
+    php-apcu php7.2-curl php7.1-mcrypt php7.2-imap php7.2-mysql php7.2-readline php-xdebug php-common \
+    php7.2-mbstring php7.2-xml php7.2-zip php7.2-json php7.2-cgi php7.2-xmlrpc php7.2-soap php7.2-intl
 COPY fastcgi_params /etc/nginx/
 RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.2/cli/php.ini && \
     sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.2/cli/php.ini && \
