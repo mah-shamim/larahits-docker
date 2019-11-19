@@ -32,7 +32,7 @@ RUN apt-add-repository ppa:nginx/stable -y && \
     apt-add-repository ppa:chris-lea/redis-server -y && \
     apt-add-repository ppa:ondrej/php -y && \
     apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 5072E1F5 && \
-    sh -c 'echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-8.0" >> /etc/apt/sources.list.d/mysql.list' && \
+    sh -c 'echo "deb http://repo.mysql.com/apt/ubuntu/ trusty mysql-5.7" >> /etc/apt/sources.list.d/mysql.list' && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/postgresql.list' && \
     curl -s https://packagecloud.io/gpg.key | apt-key add - && \
@@ -62,7 +62,7 @@ VOLUME ["/var/log/nginx"]
 # install php
 RUN apt-get install -y --force-yes php7.2 php7.2-fpm php7.2-cli php7.2-dev php7.2-pgsql php7.2-sqlite3 php7.2-gd \
     php-apcu php7.2-curl php7.1-mcrypt php7.2-imap php7.2-mysql php7.2-readline php-xdebug php-common \
-    php7.2-mbstring php7.2-xml php7.2-zip php7.2-json php7.2-cgi php7.2-xmlrpc php7.2-soap php7.2-intl
+    php7.1-mbstring php7.2-mbstring php7.2-xml php7.2-zip php7.2-json php7.2-cgi php7.2-xmlrpc php7.2-soap php7.2-intl
 COPY fastcgi_params /etc/nginx/
 RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.2/cli/php.ini && \
     sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.2/cli/php.ini && \
@@ -82,6 +82,8 @@ RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.2/cli/ph
     sed -i -e "s/pm.max_requests = 500/pm.max_requests = 200/g" /etc/php/7.2/fpm/pool.d/www.conf && \
     sed -i -e "s/;listen.mode = 0660/listen.mode = 0750/g" /etc/php/7.2/fpm/pool.d/www.conf && \
     find /etc/php/7.2/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
+
+#COPY /etc/php/7.1/mods-available/mcrypt.ini /etc/php/7.2/mods-available/mcrypt.ini
 RUN phpenmod mcrypt && \
     mkdir -p /run/php/ && chown -Rf www-data.www-data /run/php
 
