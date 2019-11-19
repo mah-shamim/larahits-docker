@@ -18,6 +18,11 @@ RUN apt-get install -y software-properties-common curl build-essential \
     python-pip re2c unattended-upgrades whois vim libnotify-bin nano wget \
     debconf-utils
 
+# set the locale
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale  && \
+    locale-gen en_US.UTF-8  && \
+    ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+
 # add some repositories
 RUN apt-add-repository ppa:nginx/stable -y && \
     #apt-add-repository ppa:rwky/redis -y && \
@@ -32,11 +37,6 @@ RUN apt-add-repository ppa:nginx/stable -y && \
     curl --silent --location https://deb.nodesource.com/setup_5.x | bash - && \
     apt-get update
 
-# set the locale
-RUN echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale  && \
-    locale-gen en_US.UTF-8  && \
-    ln -sf /usr/share/zoneinfo/UTC /etc/localtime
-    
 # setup bash
 COPY .bash_aliases /root
 
